@@ -1,4 +1,4 @@
-module github.com/time-xp/hangman_cursed
+module github.com/time-xp/hangman__cursed
 
 go 1.18
 
