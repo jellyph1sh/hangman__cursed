@@ -32,12 +32,12 @@ func GetLanguage(hangmanStruct *Hangman) {
 		termbox.Flush()
 		input := termbox.PollEvent()
 		if input.Key == termbox.KeyArrowLeft {
-			hangmantools.CreateRect(9, 9, 9, 2, termbox.ColorGreen)
-			hangmantools.ClearRect(31, 9, 8, 2)
+			CreateRect(9, 9, 9, 2, termbox.ColorGreen)
+			ClearRect(31, 9, 8, 2)
 			hangmanStruct.LangTag = "FR"
 		} else if input.Key == termbox.KeyArrowRight {
-			hangmantools.CreateRect(31, 9, 8, 2, termbox.ColorGreen)
-			hangmantools.ClearRect(9, 9, 9, 2)
+			CreateRect(31, 9, 8, 2, termbox.ColorGreen)
+			ClearRect(9, 9, 9, 2)
 			hangmanStruct.LangTag = "EN"
 		} else if input.Key == termbox.KeyEnter {
 			ask = false

@@ -3,7 +3,6 @@ package hangman
 import (
 	"encoding/json"
 	"fmt"
-	"hangmantools"
 	"math/rand"
 	"os"
 	"strings"
@@ -32,15 +31,15 @@ type Hangman struct {
 }
 
 func CheckInputLetter(hangman *Hangman) bool {
-	if !hangmantools.IsInputIsAlphabet(hangman.UserInput) {
-		hangmantools.PrintWord(hangman.Lang.LetterErr2, 3, 5, termbox.ColorRed)
+	if !IsInputIsAlphabet(hangman.UserInput) {
+		PrintWord(hangman.Lang.LetterErr2, 3, 5, termbox.ColorRed)
 		return false
 	}
-	if !hangmantools.IsUppercase(hangman.UserInput) {
-		hangman.UserInput = hangmantools.ToUppercase(hangman.UserInput)
+	if !IsUppercase(hangman.UserInput) {
+		hangman.UserInput = ToUppercase(hangman.UserInput)
 	}
-	if hangmantools.IsLetterAlreadyUse(hangman.UsedLetters, hangman.UserInput) {
-		hangmantools.PrintWord(hangman.Lang.LetterErr3, 3, 5, termbox.ColorRed)
+	if IsLetterAlreadyUse(hangman.UsedLetters, hangman.UserInput) {
+		PrintWord(hangman.Lang.LetterErr3, 3, 5, termbox.ColorRed)
 		return false
 	}
 	hangman.ChoosedLetter = hangman.UserInput
@@ -48,12 +47,12 @@ func CheckInputLetter(hangman *Hangman) bool {
 }
 
 func CheckInputStop(hangman *Hangman) bool {
-	if !hangmantools.IsInputIsAlphabet(hangman.UserInput) {
-		hangmantools.PrintWord(hangman.Lang.LetterErr2, 3, 5, termbox.ColorRed)
+	if !IsInputIsAlphabet(hangman.UserInput) {
+		PrintWord(hangman.Lang.LetterErr2, 3, 5, termbox.ColorRed)
 		return false
 	}
-	if !hangmantools.IsUppercase(hangman.UserInput) {
-		hangman.UserInput = hangmantools.ToUppercase(hangman.UserInput)
+	if !IsUppercase(hangman.UserInput) {
+		hangman.UserInput = ToUppercase(hangman.UserInput)
 	}
 	if hangman.UserInput != "STOP" {
 		return false
@@ -62,12 +61,12 @@ func CheckInputStop(hangman *Hangman) bool {
 }
 
 func CheckInputWord(hangman *Hangman) bool {
-	if !hangmantools.IsInputIsAlphabet(hangman.UserInput) {
-		hangmantools.PrintWord(hangman.Lang.LetterErr2, 3, 5, termbox.ColorRed)
+	if !IsInputIsAlphabet(hangman.UserInput) {
+		PrintWord(hangman.Lang.LetterErr2, 3, 5, termbox.ColorRed)
 		return false
 	}
-	if !hangmantools.IsUppercase(hangman.UserInput) {
-		hangman.UserInput = hangmantools.ToUppercase(hangman.UserInput)
+	if !IsUppercase(hangman.UserInput) {
+		hangman.UserInput = ToUppercase(hangman.UserInput)
 	}
 	if hangman.UserInput == hangman.SecretWord {
 		hangman.Found = true
@@ -99,7 +98,7 @@ func GetGameParameters(args []string) (string, []string, []string) {
 }
 
 func GetPlayerInput(hangman *Hangman) { // Function ask the user an letter in input
-	hangmantools.ClearAll(3, 5, 24, 0)
+	ClearAll(3, 5, 24, 0)
 	input := termbox.PollEvent()
 	if input.Key == termbox.KeyArrowLeft && hangman.Menu != "Welcome" {
 		switch hangman.Menu {
@@ -127,7 +126,7 @@ func GetPlayerInput(hangman *Hangman) { // Function ask the user an letter in in
 		if (input.Ch >= 'a' && input.Ch <= 'z') || (input.Ch >= 'A' && input.Ch <= 'Z') {
 			if len(hangman.UserInput) <= 21 {
 				hangman.UserInput += string(input.Ch)
-				hangmantools.PrintWord(hangman.UserInput, 7, 6, termbox.ColorWhite)
+				PrintWord(hangman.UserInput, 7, 6, termbox.ColorWhite)
 			}
 		} else if input.Key == termbox.KeyEnter && len(hangman.UserInput) > 0 {
 			for i := 0; i < len(hangman.UserInput); i++ {
@@ -149,7 +148,7 @@ func GetPlayerInput(hangman *Hangman) { // Function ask the user an letter in in
 					hangman.UsedLetters = append(hangman.UsedLetters, hangman.UserInput)
 				}
 			} else {
-				hangmantools.PrintWord(hangman.Lang.LetterErr2, 2, 6, termbox.ColorRed)
+				PrintWord(hangman.Lang.LetterErr2, 2, 6, termbox.ColorRed)
 			}
 			hangman.UserInput = ""
 		} else if input.Key == termbox.KeyBackspace2 && len(hangman.UserInput) > 0 {
@@ -165,7 +164,7 @@ func InsertLetter(hangman *Hangman) bool {
 	find := false
 	for index, letter := range hangman.SecretWord { // Check if the letter is in the word
 		if letter == rune(hangman.ChoosedLetter[0]) { // Place the letter at the index
-			hangman.UserWord = hangmantools.InsertAtIndex(hangman.UserWord, hangman.ChoosedLetter, index)
+			hangman.UserWord = InsertAtIndex(hangman.UserWord, hangman.ChoosedLetter, index)
 			find = true
 		}
 	}
@@ -174,12 +173,12 @@ func InsertLetter(hangman *Hangman) bool {
 
 func Save(hangman *Hangman) {
 	isSave := SaveGame(hangman)
-	hangmantools.ClearAll(0, 0, 100, 100)
-	hangmantools.CreateRect(0, 0, 59, 7, termbox.ColorBlue)
+	ClearAll(0, 0, 100, 100)
+	CreateRect(0, 0, 59, 7, termbox.ColorBlue)
 	if isSave {
-		hangmantools.PrintWord(hangman.Lang.SaveGame, 3, 3, termbox.ColorGreen)
+		PrintWord(hangman.Lang.SaveGame, 3, 3, termbox.ColorGreen)
 	} else {
-		hangmantools.PrintWord(hangman.Lang.SaveErr, 3, 3, termbox.ColorRed)
+		PrintWord(hangman.Lang.SaveErr, 3, 3, termbox.ColorRed)
 	}
 	termbox.Flush()
 	termbox.PollEvent()
@@ -216,7 +215,7 @@ func SelectRandomWord(hangman *Hangman) error {
 	splitWords := strings.Split(strWords, "\n")
 	rand.Seed(time.Now().UnixNano())
 	word := string(splitWords[rand.Intn(len(splitWords)-1)])
-	word = hangmantools.ToUppercase(word)
+	word = ToUppercase(word)
 	hangman.SecretWord = word
 	return nil
 }
@@ -229,7 +228,7 @@ func SelectRandomLettersInWord(hangman *Hangman) {
 	for i := 0; i < nLetters; i++ {
 		randNb := rand.Intn(len(word) - 1)
 		hangman.LetterIndexes[i] = randNb
-		word = hangmantools.RemoveCharAtIndex(word, randNb)
+		word = RemoveCharAtIndex(word, randNb)
 	}
 }
 
