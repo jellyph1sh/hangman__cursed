@@ -1,4 +1,4 @@
-module github.com/time-xp/hangman_classic/hangman
+module github.com/time-xp/hangman_classic
 
 go 1.18
 
