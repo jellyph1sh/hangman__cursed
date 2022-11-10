@@ -1,10 +1,6 @@
 package hangman
 
-import (
-	"hangmantools"
-
-	"github.com/nsf/termbox-go"
-)
+import "github.com/nsf/termbox-go"
 
 type Language struct {
 	Attempts,
