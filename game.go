@@ -276,6 +276,7 @@ func InitParams(params []string, paramsArgs []string) (bool, *Hangman) {
 		case "wordsFile":
 			isError, hangmanStruct := SetDefaultGameStructure(paramsArgs[i])
 			return isError, hangmanStruct
+		}
 	}
 	return true, nil
 }
